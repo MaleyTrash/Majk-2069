@@ -9,12 +9,12 @@
                 <Label>2048</Label>
             </StackLayout>
             <StackLayout BackgroundColor="Blue" Orientation="Horizontal">
-                <Label x:Name="HighScore" WidthRequest="150" HeightRequest="75" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"> High score</Label>
+                <Label x:Name="HighScore" WidthRequest="150" HeightRequest="75" HorizontalTextAlignment="Center" VerticalTextAlignment="Center">High score</Label>
                 <Label x:Name="Score" WidthRequest="150" HeightRequest="75" HorizontalTextAlignment="Center" VerticalTextAlignment="Center">Current score</Label>
             </StackLayout>
             <Button x:Name="Goback"></Button>
         </StackLayout>
-        <Grid BackgroundColor="Green" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" x:Name="GameGrid">
+        <Grid BackgroundColor="White" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" x:Name="GameGrid" RowSpacing="1" ColumnSpacing="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="75"></ColumnDefinition>
                 <ColumnDefinition Width="75"></ColumnDefinition>

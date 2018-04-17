@@ -136,6 +136,17 @@
     <Content Include="Assets\Wide310x150Logo.scale-150.png" />
     <Content Include="Assets\Wide310x150Logo.scale-200.png" />
     <Content Include="Assets\Wide310x150Logo.scale-400.png" />
+    <Content Include="Tile_1024.jpg" />
+    <Content Include="Tile_128.jpg" />
+    <Content Include="Tile_16.jpg" />
+    <Content Include="Tile_2.jpg" />
+    <Content Include="Tile_2048.jpg" />
+    <Content Include="Tile_256.jpg" />
+    <Content Include="Tile_32.jpg" />
+    <Content Include="Tile_4.jpg" />
+    <Content Include="Tile_512.jpg" />
+    <Content Include="Tile_64.jpg" />
+    <Content Include="Tile_8.jpg" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -149,7 +160,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Xamarin.Forms" Version="2.5.0.122203" />
-    <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform" Version="6.0.1"/>
+    <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform" Version="6.0.1" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\XamarinGameMikes\XamarinGameMikes.csproj">
