@@ -7,5 +7,6 @@ namespace XamarinGameMikes
     public class Tile
     {
         public int size;
+        public bool SizeChanged = false;
     }
 }
