@@ -3,55 +3,108 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:XamarinGameMikes"
              x:Class="XamarinGameMikes.MainPage">
-    <StackLayout>
-        <StackLayout BackgroundColor="AliceBlue" Orientation="Horizontal" HorizontalOptions="CenterAndExpand" VerticalOptions="StartAndExpand">
-            <StackLayout BackgroundColor="Aqua">
-                <Label>2048</Label>
+    <Grid x:Name="MainGrid">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="5*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="5*"/>
+        </Grid.RowDefinitions>
+        <ContentView Grid.Row="0" Grid.RowSpan="3">
+            <StackLayout>
+                <StackLayout BackgroundColor="AliceBlue" Orientation="Horizontal" HorizontalOptions="CenterAndExpand" VerticalOptions="StartAndExpand">
+                    <StackLayout BackgroundColor="Aqua" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+                        <Image Source="Logo.png" WidthRequest="96" HeightRequest="96"></Image>
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+                        <StackLayout  HorizontalOptions="StartAndExpand" VerticalOptions="StartAndExpand" Margin="5,5,5,5">
+                            <Label HorizontalTextAlignment="Center" VerticalTextAlignment="Center">High score</Label>
+                            <Label x:Name="HighScore" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" ></Label>
+                        </StackLayout>
+                        <StackLayout  HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" Margin="5,5,5,5">
+                            <Label HorizontalTextAlignment="Center" VerticalTextAlignment="Center">Current score</Label>
+                            <Label x:Name="Score" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"></Label>
+                        </StackLayout>
+                    </StackLayout>
+                </StackLayout>
+                <StackLayout VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand">
+                    <StackLayout Orientation="Horizontal">
+                        <Button x:Name="RestartGameButton" Text="Restart" HorizontalOptions="StartAndExpand"></Button>
+                        <Button x:Name="Goback" HorizontalOptions="EndAndExpand" Text="Go back!"></Button>
+                    </StackLayout>
+                    <Grid BackgroundColor="White" x:Name="GameGrid" RowSpacing="1" ColumnSpacing="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="75"></ColumnDefinition>
+                            <ColumnDefinition Width="75"></ColumnDefinition>
+                            <ColumnDefinition Width="75"></ColumnDefinition>
+                            <ColumnDefinition Width="75"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="75"></RowDefinition>
+                            <RowDefinition Height="75"></RowDefinition>
+                            <RowDefinition Height="75"></RowDefinition>
+                            <RowDefinition Height="75"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <BoxView WidthRequest="75" HeightRequest="75" Color="Gray" Grid.Row="0" Grid.Column="0"></BoxView>
+                        <BoxView WidthRequest="75" HeightRequest="75" Color="Gray" Grid.Row="0" Grid.Column="1"></BoxView>
+                        <BoxView WidthRequest="75" HeightRequest="75" Color="Gray" Grid.Row="0" Grid.Column="2"></BoxView>
+                        <BoxView WidthRequest="75" HeightRequest="75" Color="Gray" Grid.Row="0" Grid.Column="3"></BoxView>
+
+                        <BoxView WidthRequest="75" HeightRequest="75" Color="Gray" Grid.Row="1" Grid.Column="0"></BoxView>
+                        <BoxView WidthRequest="75" HeightRequest="75" Color="Gray" Grid.Row="1" Grid.Column="1"></BoxView>
+                        <BoxView WidthRequest="75" HeightRequest="75" Color="Gray" Grid.Row="1" Grid.Column="2"></BoxView>
+                        <BoxView WidthRequest="75" HeightRequest="75" Color="Gray" Grid.Row="1" Grid.Column="3"></BoxView>
+
+                        <BoxView WidthRequest="75" HeightRequest="75" Color="Gray" Grid.Row="2" Grid.Column="0"></BoxView>
+                        <BoxView WidthRequest="75" HeightRequest="75" Color="Gray" Grid.Row="2" Grid.Column="1"></BoxView>
+                        <BoxView WidthRequest="75" HeightRequest="75" Color="Gray" Grid.Row="2" Grid.Column="2"></BoxView>
+                        <BoxView WidthRequest="75" HeightRequest="75" Color="Gray" Grid.Row="2" Grid.Column="3"></BoxView>
+
+                        <BoxView WidthRequest="75" HeightRequest="75" Color="Gray" Grid.Row="3" Grid.Column="0"></BoxView>
+                        <BoxView WidthRequest="75" HeightRequest="75" Color="Gray" Grid.Row="3" Grid.Column="1"></BoxView>
+                        <BoxView WidthRequest="75" HeightRequest="75" Color="Gray" Grid.Row="3" Grid.Column="2"></BoxView>
+                        <BoxView WidthRequest="75" HeightRequest="75" Color="Gray" Grid.Row="3" Grid.Column="3"></BoxView>
+                    </Grid>
+
+                </StackLayout>
+                <StackLayout Orientation="Horizontal" VerticalOptions="EndAndExpand" HorizontalOptions="CenterAndExpand">
+                    <Button Text="Left" x:Name="Left"></Button>
+                    <Button Text="Right" x:Name="Right"></Button>
+                    <Button Text="Up" x:Name="Up"></Button>
+                    <Button Text="Down" x:Name="Down"></Button>
+                </StackLayout>
             </StackLayout>
-            <StackLayout BackgroundColor="Blue" Orientation="Horizontal">
-                <Label x:Name="HighScore" WidthRequest="150" HeightRequest="75" HorizontalTextAlignment="Center" VerticalTextAlignment="Center">High score</Label>
-                <Label x:Name="Score" WidthRequest="150" HeightRequest="75" HorizontalTextAlignment="Center" VerticalTextAlignment="Center">Current score</Label>
-            </StackLayout>
-            <Button x:Name="Goback"></Button>
-        </StackLayout>
-        <Grid BackgroundColor="White" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" x:Name="GameGrid" RowSpacing="1" ColumnSpacing="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="75"></ColumnDefinition>
-                <ColumnDefinition Width="75"></ColumnDefinition>
-                <ColumnDefinition Width="75"></ColumnDefinition>
-                <ColumnDefinition Width="75"></ColumnDefinition>
-            </Grid.ColumnDefinitions>
+        </ContentView>
+        <Grid Grid.RowSpan="3" x:Name="OverLayGridLost" Opacity="0" IsEnabled="False">
             <Grid.RowDefinitions>
-                <RowDefinition Height="75"></RowDefinition>
-                <RowDefinition Height="75"></RowDefinition>
-                <RowDefinition Height="75"></RowDefinition>
-                <RowDefinition Height="75"></RowDefinition>
+                <RowDefinition Height="5*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="5*"/>
             </Grid.RowDefinitions>
-            <BoxView WidthRequest="75" HeightRequest="75" Color="Gray" Grid.Row="0" Grid.Column="0"></BoxView>
-            <BoxView WidthRequest="75" HeightRequest="75" Color="Gray" Grid.Row="0" Grid.Column="1"></BoxView>
-            <BoxView WidthRequest="75" HeightRequest="75" Color="Gray" Grid.Row="0" Grid.Column="2"></BoxView>
-            <BoxView WidthRequest="75" HeightRequest="75" Color="Gray" Grid.Row="0" Grid.Column="3"></BoxView>
-
-            <BoxView WidthRequest="75" HeightRequest="75" Color="Gray" Grid.Row="1" Grid.Column="0"></BoxView>
-            <BoxView WidthRequest="75" HeightRequest="75" Color="Gray" Grid.Row="1" Grid.Column="1"></BoxView>
-            <BoxView WidthRequest="75" HeightRequest="75" Color="Gray" Grid.Row="1" Grid.Column="2"></BoxView>
-            <BoxView WidthRequest="75" HeightRequest="75" Color="Gray" Grid.Row="1" Grid.Column="3"></BoxView>
-
-            <BoxView WidthRequest="75" HeightRequest="75" Color="Gray" Grid.Row="2" Grid.Column="0"></BoxView>
-            <BoxView WidthRequest="75" HeightRequest="75" Color="Gray" Grid.Row="2" Grid.Column="1"></BoxView>
-            <BoxView WidthRequest="75" HeightRequest="75" Color="Gray" Grid.Row="2" Grid.Column="2"></BoxView>
-            <BoxView WidthRequest="75" HeightRequest="75" Color="Gray" Grid.Row="2" Grid.Column="3"></BoxView>
-
-            <BoxView WidthRequest="75" HeightRequest="75" Color="Gray" Grid.Row="3" Grid.Column="0"></BoxView>
-            <BoxView WidthRequest="75" HeightRequest="75" Color="Gray" Grid.Row="3" Grid.Column="1"></BoxView>
-            <BoxView WidthRequest="75" HeightRequest="75" Color="Gray" Grid.Row="3" Grid.Column="2"></BoxView>
-            <BoxView WidthRequest="75" HeightRequest="75" Color="Gray" Grid.Row="3" Grid.Column="3"></BoxView>
+            <ContentView Grid.RowSpan="3" BackgroundColor="LightGray" Opacity="0.75"></ContentView>
+            <ContentView Grid.Row="1" BackgroundColor="Transparent">
+                <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+                    <Label HorizontalTextAlignment="Center" FontAttributes="Bold">You Lost!</Label>
+                    <Button Text="New Game" x:Name="OverlayLost"></Button>
+                </StackLayout>
+            </ContentView>
         </Grid>
-        <StackLayout Orientation="Horizontal" VerticalOptions="EndAndExpand" HorizontalOptions="CenterAndExpand">
-            <Button Text="Left" x:Name="Left"></Button>
-            <Button Text="Right" x:Name="Right"></Button>
-            <Button Text="Up" x:Name="Up"></Button>
-            <Button Text="Down" x:Name="Down"></Button>
-        </StackLayout>
-    </StackLayout>
+        <Grid Grid.RowSpan="3" x:Name="OverLayGridWin" Opacity="0" IsEnabled="False">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="5*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="5*"/>
+            </Grid.RowDefinitions>
+            <ContentView Grid.RowSpan="3" BackgroundColor="LightGray" Opacity="0.75"></ContentView>
+            <ContentView Grid.Row="1" BackgroundColor="Transparent">
+                <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+                    <Label HorizontalTextAlignment="Center" FontAttributes="Bold">You Won!</Label>
+                    <StackLayout Orientation="Horizontal">
+                        <Button x:Name="GameWonCont" Text="Continue"></Button>
+                        <Button x:Name="GameWonNew" Text="New Game"></Button>
+                    </StackLayout>
+                </StackLayout>
+            </ContentView>
+        </Grid>
+    </Grid>
+
 </ContentPage>
