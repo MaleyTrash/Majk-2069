@@ -12,10 +12,11 @@ namespace XamarinGameMikes
     public partial class MainPage : ContentPage, ISwipeCallBack
     {
         public Game gameManager;
+        public GameSaver gameSaver = new GameSaver();
         public MainPage()
         {
             InitializeComponent();
-            gameManager = new Game(GameGrid, Score, HighScore, null, OverLayGridWin, OverLayGridLost);
+            GameCreator();
             SwipeListener swipeListener = new SwipeListener(MainGrid, this);
 
             Left.Command = new Command(async () => await gameManager.Left());
@@ -31,9 +32,29 @@ namespace XamarinGameMikes
             GameWonCont.Command = new Command(async () => await GameContinue());
             
         }
+        public void GameCreator()
+        {
+            if (gameSaver.saveExist())
+            {
+                GameData gameData = gameSaver.LoadGame();
+                if (gameData != null)
+                {
+                    Score.Text = gameData.Score.ToString();
+                    HighScore.Text = gameData.HighScore.ToString();
+                    gameManager = new Game(GameGrid, Score, HighScore, gameData.Tiles, OverLayGridWin, OverLayGridLost);
+                }
+                else
+                {
+                    gameManager = new Game(GameGrid, Score, HighScore, null, OverLayGridWin, OverLayGridLost);
+                }
+            }
+            else
+            {
+                gameManager = new Game(GameGrid, Score, HighScore, null, OverLayGridWin, OverLayGridLost);
+            }
+        }
         public async Task onBottomSwipeAsync(View view)
         {
-
             Debug.WriteLine("Down");
             await gameManager.Down();
         }

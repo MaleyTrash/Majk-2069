@@ -19,7 +19,7 @@ namespace XamarinGameMikes
         public Label ScoreLabel;
         public Label HighScoreLabel;
         //
-        private GameSaver gameSaver = new GameSaver();
+        public GameSaver gameSaver = new GameSaver();
         private CanMakeMove CanMove = new CanMakeMove();
         public GameAnimations gameAnimations = new GameAnimations();
         //var
@@ -158,7 +158,6 @@ namespace XamarinGameMikes
         {
             x = 0;
             y = 0;
-            Debug.WriteLine(gameSaver.getPath());
             foreach (List<Tile> Tiles in Tiles)
             {
                 foreach (Tile tile in Tiles)
@@ -171,7 +170,7 @@ namespace XamarinGameMikes
                             GameTiles[y][x].Source = "Tile_" + SkinName + tile.size.ToString() + ".jpg";
                         }
                     }
-                    else
+                    else if(!reRender)
                     {
                         GameTiles[y][x].Opacity = 0;
                     }
@@ -179,6 +178,10 @@ namespace XamarinGameMikes
                     {
                         GameWon = true;
                         await ShowOverlay(true);
+                    }
+                    if (reRender)
+                    {
+                        GameTiles[y][x].Opacity = 100;
                     }
                     x++;
                 }
@@ -190,6 +193,7 @@ namespace XamarinGameMikes
             {
                 HighScoreLabel.Text = score.ToString();
             }
+            gameSaver.saveGame(this);
         }
         public async Task SpawnRandomTileAsync()
         {
