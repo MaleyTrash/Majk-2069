@@ -9,9 +9,40 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="5*"/>
         </Grid.RowDefinitions>
-        <ContentView Grid.Row="0" Grid.RowSpan="3">
+        <Grid Grid.RowSpan="3" x:Name="OverLayGridLost" Opacity="0" IsEnabled="False" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="5*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="5*"/>
+            </Grid.RowDefinitions>
+            <ContentView Grid.RowSpan="3" BackgroundColor="LightGray" Opacity="0.75"></ContentView>
+            <ContentView Grid.Row="1" BackgroundColor="Transparent">
+                <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+                    <Label HorizontalTextAlignment="Center" FontAttributes="Bold">You Lost!</Label>
+                    <Button Text="New Game" x:Name="OverlayLost"></Button>
+                </StackLayout>
+            </ContentView>
+        </Grid>
+        <Grid Grid.RowSpan="3" x:Name="OverLayGridWin" Opacity="0" IsEnabled="False">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="5*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="5*"/>
+            </Grid.RowDefinitions>
+            <ContentView Grid.RowSpan="3" BackgroundColor="LightGray" Opacity="0.75"></ContentView>
+            <ContentView Grid.Row="1" BackgroundColor="Transparent">
+                <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+                    <Label HorizontalTextAlignment="Center" FontAttributes="Bold">You Won!</Label>
+                    <StackLayout Orientation="Horizontal">
+                        <Button x:Name="GameWonCont" Text="Continue"></Button>
+                        <Button x:Name="GameWonNew" Text="New Game"></Button>
+                    </StackLayout>
+                </StackLayout>
+            </ContentView>
+        </Grid>
+        <Grid Grid.RowSpan="3" x:Name="MainView">
             <StackLayout>
-                <StackLayout BackgroundColor="AliceBlue" Orientation="Horizontal" HorizontalOptions="CenterAndExpand" VerticalOptions="StartAndExpand">
+                <StackLayout BackgroundColor="#FAD5AD" Orientation="Horizontal" HorizontalOptions="CenterAndExpand" VerticalOptions="StartAndExpand">
                     <StackLayout BackgroundColor="Aqua" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
                         <Image Source="Logo.png" WidthRequest="96" HeightRequest="96"></Image>
                     </StackLayout>
@@ -73,38 +104,6 @@
                     <Button Text="Down" x:Name="Down"></Button>
                 </StackLayout>
             </StackLayout>
-        </ContentView>
-        <Grid Grid.RowSpan="3" x:Name="OverLayGridLost" Opacity="0" IsEnabled="False">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="5*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="5*"/>
-            </Grid.RowDefinitions>
-            <ContentView Grid.RowSpan="3" BackgroundColor="LightGray" Opacity="0.75"></ContentView>
-            <ContentView Grid.Row="1" BackgroundColor="Transparent">
-                <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
-                    <Label HorizontalTextAlignment="Center" FontAttributes="Bold">You Lost!</Label>
-                    <Button Text="New Game" x:Name="OverlayLost"></Button>
-                </StackLayout>
-            </ContentView>
-        </Grid>
-        <Grid Grid.RowSpan="3" x:Name="OverLayGridWin" Opacity="0" IsEnabled="False">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="5*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="5*"/>
-            </Grid.RowDefinitions>
-            <ContentView Grid.RowSpan="3" BackgroundColor="LightGray" Opacity="0.75"></ContentView>
-            <ContentView Grid.Row="1" BackgroundColor="Transparent">
-                <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
-                    <Label HorizontalTextAlignment="Center" FontAttributes="Bold">You Won!</Label>
-                    <StackLayout Orientation="Horizontal">
-                        <Button x:Name="GameWonCont" Text="Continue"></Button>
-                        <Button x:Name="GameWonNew" Text="New Game"></Button>
-                    </StackLayout>
-                </StackLayout>
-            </ContentView>
         </Grid>
     </Grid>
-
 </ContentPage>

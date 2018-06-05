@@ -8,6 +8,11 @@ namespace XamarinGameMikes
 {
     public class GameAnimations
     {
+        private Grid MainGrid;
+        public GameAnimations(Grid main)
+        {
+            MainGrid = main;
+        }
         public async Task TileMove(int x, int y, int size, int NewX, int NewY, bool merge, List<List<Image>> GameTiles,Grid GameGrid,string SkinName)
         {
             if (size != 0)
@@ -44,12 +49,14 @@ namespace XamarinGameMikes
         public async Task ShowOverlay(Grid Overlay)
         {
             Overlay.IsEnabled = true;
+            MainGrid.RaiseChild(Overlay);
             await Overlay.FadeTo(1, 500);
 
         }
         public async Task HideOverLay(Grid Overlay)
         {
             await Overlay.FadeTo(0, 500);
+            MainGrid.LowerChild(Overlay);
             Overlay.IsEnabled = false;
         }
     }

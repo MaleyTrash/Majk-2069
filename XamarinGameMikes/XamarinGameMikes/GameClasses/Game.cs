@@ -13,6 +13,7 @@ namespace XamarinGameMikes
         public List<List<Image>> GameTiles = new List<List<Image>>();
         public List<List<Tile>> OldTiles = new List<List<Tile>>();
         //Elements
+        private Grid MainGrid;
         private Grid OverlayGridLost;
         private Grid OverlayGridWon;
         private Grid GameGrid;
@@ -21,7 +22,7 @@ namespace XamarinGameMikes
         //
         public GameSaver gameSaver = new GameSaver();
         private CanMakeMove CanMove = new CanMakeMove();
-        public GameAnimations gameAnimations = new GameAnimations();
+        public GameAnimations gameAnimations;
         //var
         public int OldScore;
         public int score;
@@ -32,12 +33,14 @@ namespace XamarinGameMikes
         int x = 0;
         int y = 0;
 
-        public Game(Grid grid, Label Labelscore, Label LabelHighScore, List<List<Tile>> tiles,Grid overlayWon,Grid overlayLost)
+        public Game(Grid grid, Label Labelscore, Label LabelHighScore, List<List<Tile>> tiles,Grid overlayWon,Grid overlayLost, Grid Main)
         {
+            gameAnimations = new GameAnimations(Main);
+            MainGrid = Main;
             OverlayGridLost = overlayLost;
             OverlayGridWon = overlayWon;
             GameGrid = grid;
-            HighScore = 0;
+            HighScore = int.Parse(LabelHighScore.Text);
             ScoreLabel = Labelscore;
             HighScoreLabel = LabelHighScore;
 
@@ -56,7 +59,7 @@ namespace XamarinGameMikes
             RenderGame(true);
 
         }
-        public void NewGame(Grid grid, Label Labelscore, Label LabelHighScore)
+        public async Task NewGameAsync(Grid grid, Label Labelscore, Label LabelHighScore)
         {
             GameWon = false;
             if (OverlayGridWon.IsEnabled == true)
@@ -83,8 +86,8 @@ namespace XamarinGameMikes
             ScoreLabel.Text = 0.ToString();
             CreateGameField();
             CreateTileList();
-            SpawnRandomTileAsync();
-            RenderGame(true);
+            await SpawnRandomTileAsync();
+            await RenderGame(true);
         }
 
         public void CreateTileList()
@@ -170,18 +173,28 @@ namespace XamarinGameMikes
                             GameTiles[y][x].Source = "Tile_" + SkinName + tile.size.ToString() + ".jpg";
                         }
                     }
-                    else if(!reRender)
+                    else
                     {
                         GameTiles[y][x].Opacity = 0;
-                    }
-                    if (tile.size == 2048 && GameWon == false)
-                    {
-                        GameWon = true;
-                        await ShowOverlay(true);
+                        GameTiles[y][x].Source = null;
                     }
                     if (reRender)
                     {
-                        GameTiles[y][x].Opacity = 100;
+                        if (tile.size != 0)
+                        {
+                            GameTiles[y][x].Opacity = 100;
+                            GameTiles[y][x].Source = "Tile_" + SkinName + tile.size.ToString() + ".jpg";
+                        }
+                        else
+                        {
+                            GameTiles[y][x].Opacity = 0;
+                            GameTiles[y][x].Source = null;
+                        }
+                    }
+                    if (tile.size == 8 && GameWon == false)
+                    {
+                        GameWon = true;
+                        await ShowOverlay(true);
                     }
                     x++;
                 }
@@ -265,6 +278,7 @@ namespace XamarinGameMikes
                             {
                                 Tiles[y + 1][x].size = Tiles[y][x].size;
                                 Tiles[y][x].size = 0;
+                                GameTiles[y][x].Source = null;
                                 counter++;
                                 y++;
                                 Moved = true;
@@ -302,6 +316,7 @@ namespace XamarinGameMikes
                         {
                             Tiles[y + 1][x].size *= 2;
                             Tiles[y][x].size = 0;
+                            GameTiles[y][x].Source = null;
                             score += Tiles[y + 1][x].size;
                             counter++;
                             y--;
@@ -337,6 +352,7 @@ namespace XamarinGameMikes
                             {
                                 Tiles[y + 1][x].size = Tiles[y][x].size;
                                 Tiles[y][x].size = 0;
+                                GameTiles[y][x].Source = null;
                                 counter++;
                                 y++;
                                 Moved = true;
@@ -412,6 +428,7 @@ namespace XamarinGameMikes
                             {
                                 Tiles[y - 1][x].size = Tiles[y][x].size;
                                 Tiles[y][x].size = 0;
+                                GameTiles[y][x].Source = null;
                                 counter++;
                                 y--;
                                 Moved = true;
@@ -445,6 +462,7 @@ namespace XamarinGameMikes
                         {
                             Tiles[y - 1][x].size *= 2;
                             Tiles[y][x].size = 0;
+                            GameTiles[y][x].Source = null;
                             score += Tiles[y - 1][x].size;
                             counter++;
                             y--;
@@ -480,6 +498,7 @@ namespace XamarinGameMikes
                             {
                                 Tiles[y - 1][x].size = Tiles[y][x].size;
                                 Tiles[y][x].size = 0;
+                                GameTiles[y][x].Source = null;
                                 counter++;
                                 y--;
                                 Moved = true;
@@ -553,6 +572,7 @@ namespace XamarinGameMikes
                             {
                                 Tiles[y][x - 1].size = Tiles[y][x].size;
                                 Tiles[y][x].size = 0;
+                                GameTiles[y][x].Source = null;
                                 Moved = true;
                                 counter++;
                                 x--;
@@ -590,6 +610,7 @@ namespace XamarinGameMikes
                         {
                             Tiles[y][x - 1].size *= 2;
                             Tiles[y][x].size = 0;
+                            GameTiles[y][x].Source = null;
                             score += Tiles[y][x - 1].size;
                             counter++;
                             x--;
@@ -625,6 +646,7 @@ namespace XamarinGameMikes
                             {
                                 Tiles[y][x - 1].size = Tiles[y][x].size;
                                 Tiles[y][x].size = 0;
+                                GameTiles[y][x].Source = null;
                                 counter++;
                                 x--;
                                 Moved = true;
@@ -699,6 +721,7 @@ namespace XamarinGameMikes
                             {
                                 Tiles[y][x + 1].size = Tiles[y][x].size;
                                 Tiles[y][x].size = 0;
+                                GameTiles[y][x].Source = null;
                                 counter++;
                                 x++;
                                 Moved = true;
@@ -737,6 +760,7 @@ namespace XamarinGameMikes
                         {
                             Tiles[y][x + 1].size *= 2;
                             Tiles[y][x].size = 0;
+                            GameTiles[y][x].Source = null;
                             score += Tiles[y][x + 1].size;
                             counter++;
                             x--;
@@ -773,6 +797,7 @@ namespace XamarinGameMikes
                             {
                                 Tiles[y][x + 1].size = Tiles[y][x].size;
                                 Tiles[y][x].size = 0;
+                                GameTiles[y][x].Source = null;
                                 counter++;
                                 x++;
                                 Moved = true;
@@ -818,7 +843,7 @@ namespace XamarinGameMikes
                 await RenderGame(false);
             }
         }
-
+    
         public async Task GoBack()
         {
             score = OldScore;

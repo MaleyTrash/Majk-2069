@@ -6,7 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
+using Xamarin.Forms.Xaml;
 
+[assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace XamarinGameMikes
 {
     public partial class MainPage : ContentPage, ISwipeCallBack
@@ -15,9 +17,10 @@ namespace XamarinGameMikes
         public GameSaver gameSaver = new GameSaver();
         public MainPage()
         {
+            
             InitializeComponent();
             GameCreator();
-            SwipeListener swipeListener = new SwipeListener(MainGrid, this);
+            SwipeListener swipeListener = new SwipeListener(MainView, this);
 
             Left.Command = new Command(async () => await gameManager.Left());
             Right.Command = new Command(async () => await gameManager.Right());
@@ -26,9 +29,9 @@ namespace XamarinGameMikes
 
             Goback.Command = new Command(async () => await gameManager.GoBack());
 
-            RestartGameButton.Command = new Command(() => RestartGame());
-            OverlayLost.Command = new Command(() => RestartGame());
-            GameWonNew.Command = new Command(() => RestartGame());
+            RestartGameButton.Command = new Command(async () => await RestartGameAsync());
+            OverlayLost.Command = new Command(async () => await RestartGameAsync());
+            GameWonNew.Command = new Command(async () => await RestartGameAsync());
             GameWonCont.Command = new Command(async () => await GameContinue());
             
         }
@@ -39,28 +42,29 @@ namespace XamarinGameMikes
                 GameData gameData = gameSaver.LoadGame();
                 if (gameData != null)
                 {
+                    Debug.WriteLine(gameData.HighScore);
                     Score.Text = gameData.Score.ToString();
                     HighScore.Text = gameData.HighScore.ToString();
-                    gameManager = new Game(GameGrid, Score, HighScore, gameData.Tiles, OverLayGridWin, OverLayGridLost);
+                    gameManager = new Game(GameGrid, Score, HighScore, gameData.Tiles, OverLayGridWin, OverLayGridLost,MainGrid);
                 }
                 else
                 {
-                    gameManager = new Game(GameGrid, Score, HighScore, null, OverLayGridWin, OverLayGridLost);
+                    gameManager = new Game(GameGrid, Score, HighScore, null, OverLayGridWin, OverLayGridLost, MainGrid);
                 }
             }
             else
             {
-                gameManager = new Game(GameGrid, Score, HighScore, null, OverLayGridWin, OverLayGridLost);
+                gameManager = new Game(GameGrid, Score, HighScore, null, OverLayGridWin, OverLayGridLost, MainGrid);
             }
         }
         public async Task onBottomSwipeAsync(View view)
         {
-            Debug.WriteLine("Down");
+        //    Debug.WriteLine("Down");
             await gameManager.Down();
         }
         public async Task onLeftSwipeAsync(View view)
         {
-            Debug.WriteLine("Left");
+         //   Debug.WriteLine("Left");
             await gameManager.Left();
         }
 
@@ -71,23 +75,21 @@ namespace XamarinGameMikes
 
         public async Task onRightSwipeAsync(View view)
         {
-            Debug.WriteLine("Right");
+            //Debug.WriteLine("Right");
             await gameManager.Right();
         }
 
         public async Task onTopSwipeAsync(View view)
         {
-            Debug.WriteLine("Up");
+        //    Debug.WriteLine("Up");
             await gameManager.Up();
         }
-        public void RestartGame()
+        public async Task RestartGameAsync()
         {
-            Debug.WriteLine("Game Reset");
-            gameManager.NewGame(GameGrid, Score, HighScore);
+            await gameManager.NewGameAsync(GameGrid, Score, HighScore);
         }
         public async Task GameContinue()
         {
-            Debug.WriteLine("Game cont");
             await gameManager.gameAnimations.HideOverLay(OverLayGridWin);
         }
     }
