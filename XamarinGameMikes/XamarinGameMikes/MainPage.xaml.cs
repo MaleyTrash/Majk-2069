@@ -42,19 +42,18 @@ namespace XamarinGameMikes
                 GameData gameData = gameSaver.LoadGame();
                 if (gameData != null)
                 {
-                    Debug.WriteLine(gameData.HighScore);
                     Score.Text = gameData.Score.ToString();
                     HighScore.Text = gameData.HighScore.ToString();
-                    gameManager = new Game(GameGrid, Score, HighScore, gameData.Tiles, OverLayGridWin, OverLayGridLost,MainGrid);
+                    gameManager = new Game(GameGrid, Score, HighScore, gameData.Tiles, OverLayGridWin, OverLayGridLost,MainGrid,MainView);
                 }
                 else
                 {
-                    gameManager = new Game(GameGrid, Score, HighScore, null, OverLayGridWin, OverLayGridLost, MainGrid);
+                    gameManager = new Game(GameGrid, Score, HighScore, null, OverLayGridWin, OverLayGridLost, MainGrid, MainView);
                 }
             }
             else
             {
-                gameManager = new Game(GameGrid, Score, HighScore, null, OverLayGridWin, OverLayGridLost, MainGrid);
+                gameManager = new Game(GameGrid, Score, HighScore, null, OverLayGridWin, OverLayGridLost, MainGrid, MainView);
             }
         }
         public async Task onBottomSwipeAsync(View view)

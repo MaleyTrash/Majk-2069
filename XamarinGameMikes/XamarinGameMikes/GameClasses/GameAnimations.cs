@@ -9,9 +9,11 @@ namespace XamarinGameMikes
     public class GameAnimations
     {
         private Grid MainGrid;
-        public GameAnimations(Grid main)
+        private Grid MainView;
+        public GameAnimations(Grid main,Grid mainView)
         {
             MainGrid = main;
+            MainView = mainView;
         }
         public async Task TileMove(int x, int y, int size, int NewX, int NewY, bool merge, List<List<Image>> GameTiles,Grid GameGrid,string SkinName)
         {
@@ -56,7 +58,7 @@ namespace XamarinGameMikes
         public async Task HideOverLay(Grid Overlay)
         {
             await Overlay.FadeTo(0, 500);
-            MainGrid.LowerChild(Overlay);
+            MainGrid.RaiseChild(MainView);
             Overlay.IsEnabled = false;
         }
     }

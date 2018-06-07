@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Reflection;
 namespace XamarinGameMikes
 {
-    public class Game
+    public partial class Game
     {
         //Field
         public List<List<Tile>> Tiles = new List<List<Tile>>();
@@ -29,18 +29,22 @@ namespace XamarinGameMikes
         private int HighScore;
         public string SkinName = "";
         public bool GameWon = false;
-        //cords
-        int x = 0;
-        int y = 0;
 
-        public Game(Grid grid, Label Labelscore, Label LabelHighScore, List<List<Tile>> tiles,Grid overlayWon,Grid overlayLost, Grid Main)
+        public Game(Grid grid, Label Labelscore, Label LabelHighScore, List<List<Tile>> tiles, Grid overlayWon, Grid overlayLost, Grid Main, Grid MainView)
         {
-            gameAnimations = new GameAnimations(Main);
+            gameAnimations = new GameAnimations(Main, MainView);
             MainGrid = Main;
             OverlayGridLost = overlayLost;
             OverlayGridWon = overlayWon;
             GameGrid = grid;
-            HighScore = int.Parse(LabelHighScore.Text);
+            if (LabelHighScore.Text == null)
+            {
+                HighScore = 0;
+            }
+            else
+            {
+                HighScore = int.Parse(LabelHighScore.Text);
+            }
             ScoreLabel = Labelscore;
             HighScoreLabel = LabelHighScore;
 
@@ -159,8 +163,8 @@ namespace XamarinGameMikes
 
         public async Task RenderGame(bool reRender)
         {
-            x = 0;
-            y = 0;
+            int x = 0;
+            int y = 0;
             foreach (List<Tile> Tiles in Tiles)
             {
                 foreach (Tile tile in Tiles)
@@ -191,7 +195,7 @@ namespace XamarinGameMikes
                             GameTiles[y][x].Source = null;
                         }
                     }
-                    if (tile.size == 8 && GameWon == false)
+                    if (tile.size == 2048 && GameWon == false)
                     {
                         GameWon = true;
                         await ShowOverlay(true);
@@ -213,8 +217,8 @@ namespace XamarinGameMikes
             Random RandTile = new Random();
             List<TilePos> FreeTiles = new List<TilePos>();
             int TileSize = 2;
-            x = 0;
-            y = 0;
+            int x = 0;
+            int y = 0;
 
             foreach (List<Tile> TileList in Tiles)
             {
@@ -254,8 +258,8 @@ namespace XamarinGameMikes
             CreateOldTileList();
             List<Task> animations = new List<Task>();
 
-            x = 0;
-            y = 2;
+            int x = 0;
+            int y = 2;
 
             int counter = 0;
 
@@ -292,7 +296,7 @@ namespace XamarinGameMikes
                         y -= counter;
                         if (counter > 0)
                         {
-                            animations.Add(gameAnimations.TileMove(x, StartY, StartSize, 76 * counter, 0, false,GameTiles,GameGrid,SkinName));
+                            animations.Add(gameAnimations.TileMove(x, StartY, StartSize, 76 * counter, 0, false, GameTiles, GameGrid, SkinName));
                             counter = 0;
                         }
                     }
@@ -321,7 +325,7 @@ namespace XamarinGameMikes
                             counter++;
                             y--;
                             y--;
-                            animations.Add(gameAnimations.TileMove(x, StartY, StartSize, 76 * counter, 0, true,GameTiles,GameGrid,SkinName));
+                            animations.Add(gameAnimations.TileMove(x, StartY, StartSize, 76 * counter, 0, true, GameTiles, GameGrid, SkinName));
                             counter = 0;
                             Moved = true;
                         }
@@ -366,7 +370,7 @@ namespace XamarinGameMikes
                         y -= counter;
                         if (counter > 0)
                         {
-                            animations.Add(gameAnimations.TileMove(x, StartY, StartSize, 76 * counter, 0, false,GameTiles,GameGrid,SkinName));
+                            animations.Add(gameAnimations.TileMove(x, StartY, StartSize, 76 * counter, 0, false, GameTiles, GameGrid, SkinName));
                             counter = 0;
                         }
                     }
@@ -403,8 +407,8 @@ namespace XamarinGameMikes
             OldScore = score;
             CreateOldTileList();
             List<Task> animations = new List<Task>();
-            x = 0;
-            y = 3;
+            int x = 0;
+            int y = 3;
 
             int counter = 0;
 
@@ -439,7 +443,7 @@ namespace XamarinGameMikes
                                 break;
                             }
                         }
-                        animations.Add(gameAnimations.TileMove(x, StartY, StartSize, -76 * counter, 0, false,GameTiles,GameGrid,SkinName));
+                        animations.Add(gameAnimations.TileMove(x, StartY, StartSize, -76 * counter, 0, false, GameTiles, GameGrid, SkinName));
                         counter = 0;
                     }
                     else
@@ -467,7 +471,7 @@ namespace XamarinGameMikes
                             counter++;
                             y--;
                             y--;
-                            animations.Add(gameAnimations.TileMove(x, StartY, StartSize, -76 * counter, 0, true,GameTiles,GameGrid,SkinName));
+                            animations.Add(gameAnimations.TileMove(x, StartY, StartSize, -76 * counter, 0, true, GameTiles, GameGrid, SkinName));
                             counter = 0;
                             Moved = true;
                         }
@@ -548,8 +552,8 @@ namespace XamarinGameMikes
             CreateOldTileList();
             List<Task> animations = new List<Task>();
 
-            y = 0;
-            x = 3;
+            int y = 0;
+            int x = 3;
 
             bool Moved = false;
             int counter = 0;
@@ -697,8 +701,8 @@ namespace XamarinGameMikes
             CreateOldTileList();
             List<Task> animations = new List<Task>();
 
-            y = 0;
-            x = 2;
+            int y = 0;
+            int x = 2;
 
             int counter = 0;
 
@@ -843,14 +847,196 @@ namespace XamarinGameMikes
                 await RenderGame(false);
             }
         }
-    
+
         public async Task GoBack()
         {
             score = OldScore;
             Tiles = OldTiles;
             await RenderGame(true);
         }
-        
+        public async Task Move(MoveDir Dir)
+        {
+            OldScore = score;
+            CreateOldTileList();
+            List<Task> animations = new List<Task>();
+            int x = 0;
+            int y = 0;
+            int dirX = 0;
+            int dirY = 0;
+            int StartY = 0;
+            int StartX = 0;
+
+            int counter = 0;
+            int StartSize = 0;
+
+            bool Moved = false;
+
+            switch (Dir)
+            {
+                case MoveDir.left:
+                    x = 0;
+                    y = 3;
+                    dirY = -1;
+                    
+                    break;
+                case MoveDir.right:
+                    x = 0;
+                    y = 2;
+                    dirY = -1;
+                    break;
+                case MoveDir.up:
+                    x = 3;
+                    y = 0;
+                    dirX = -1;
+                    break;
+                case MoveDir.down:
+                    x = 2;
+                    y = 0;
+                    dirX = -1;
+                    break;
+                default:
+                    break;
+            }
+
+            while (x < 4)
+            {
+                animations = new List<Task>();
+                while (y >= 0)
+                {
+                    if (Tiles[y ][x].size != 0)
+                    {
+                        StartY = y;
+                        StartX = x;
+                        StartSize = Tiles[y][x].size;
+                        while (y < 3)
+                        {
+                            if (Tiles[y + 1][x].size == 0)
+                            {
+                                Tiles[y + 1][x].size = Tiles[y][x].size;
+                                Tiles[y][x].size = 0;
+                                GameTiles[y][x].Source = null;
+                                counter++;
+                                y++;
+                                Moved = true;
+                            }
+                            else
+                            {
+                                y--;
+                                break;
+                            }
+                        }
+                        y -= counter;
+                        if (counter > 0)
+                        {
+                            animations.Add(gameAnimations.TileMove(StartX, StartY, StartSize, 76 * counter, 0, false, GameTiles, GameGrid, SkinName));
+                            animations.Add(gameAnimations.TileMove(StartX, StartY, StartSize, 0, 76 * counter, false, GameTiles, GameGrid, SkinName));
+
+                            counter = 0;
+                        }
+                    }
+                    else
+                    {
+                        y--;
+                    }
+                }
+                Task.WhenAll(animations);
+                animations = new List<Task>();
+                counter = 0;
+                y = 2;
+
+                while (y >= 0)
+                {
+                    if (Tiles[y][x].size != 0)
+                    {
+                        StartY = y;
+                        StartSize = Tiles[y][x].size;
+                        if (Tiles[y][x].size == Tiles[y + 1][x].size)
+                        {
+                            Tiles[y + 1][x].size *= 2;
+                            Tiles[y][x].size = 0;
+                            GameTiles[y][x].Source = null;
+                            score += Tiles[y + 1][x].size;
+                            counter++;
+                            y--;
+                            y--;
+                            animations.Add(gameAnimations.TileMove(x, StartY, StartSize, 76 * counter, 0, true, GameTiles, GameGrid, SkinName));
+                            counter = 0;
+                            Moved = true;
+                        }
+                        else
+                        {
+                            y--;
+                        }
+                    }
+                    else
+                    {
+                        y--;
+                    }
+                }
+                Task.WhenAll(animations);
+                animations = new List<Task>();
+                counter = 0;
+                y = 2;
+
+                while (y >= 0)
+                {
+                    if (Tiles[y][x].size != 0)
+                    {
+                        StartY = y;
+                        StartSize = Tiles[y][x].size;
+                        while (y < 3)
+                        {
+                            if (Tiles[y + 1][x].size == 0)
+                            {
+                                Tiles[y + 1][x].size = Tiles[y][x].size;
+                                Tiles[y][x].size = 0;
+                                GameTiles[y][x].Source = null;
+                                counter++;
+                                y++;
+                                Moved = true;
+                            }
+                            else
+                            {
+                                y--;
+                                break;
+                            }
+                        }
+                        y -= counter;
+                        if (counter > 0)
+                        {
+                            animations.Add(gameAnimations.TileMove(x, StartY, StartSize, 76 * counter, 0, false, GameTiles, GameGrid, SkinName));
+                            counter = 0;
+                        }
+                    }
+                    else
+                    {
+                        y--;
+                    }
+                }
+                counter = 0;
+                y = 2;
+                x++;
+                if (x < 3)
+                {
+                    Task.WhenAll(animations);
+                }
+            }
+
+            await Task.WhenAll(animations);
+            if (Moved)
+            {
+                await SpawnRandomTileAsync();
+            }
+            else if (!CanMove.CanMove(Tiles))
+            {
+                await ShowOverlay(false);
+            }
+            else
+            {
+                await RenderGame(false);
+            }
+        }
+       
         public async Task ShowOverlay(bool Won)
         {
             if (Won)
